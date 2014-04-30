@@ -14,4 +14,28 @@ volume=root
 snapshot_dir=snapshots
 
 cd $btrfs_root
-sudo btrfs subvolume snapshot "$volume" "$snapshot_dir/$volume-`date +%Y%m%d`"
+
+# Ensure we have root rights
+if [[ $EUID -ne 0 ]]; then
+  sudo echo blub > /dev/null
+fi
+
+# Ensure the subvolmune to backup exists
+if [ ! -d $volume ]; then
+  echo "$volume not found; trying to mount $btrfs_root"
+  sudo mount $btrfs_root
+  sleep 2
+  if [ ! -d $volume ]; then
+    echo "Failed to find subvolume $volume"
+    exit 1
+  fi
+fi
+
+# Numerate snapshots for each day
+i=1
+while [ -d "$snapshot_dir/$volume-`date +%Y%m%d`-$i" ]; do
+  ((i++))
+done
+
+# Create snapshot
+sudo btrfs subvolume snapshot "$volume" "$snapshot_dir/$volume-`date +%Y%m%d`-$i"
