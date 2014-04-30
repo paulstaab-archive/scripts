@@ -39,3 +39,5 @@ done
 
 # Create snapshot
 sudo btrfs subvolume snapshot "$volume" "$snapshot_dir/$volume-`date +%Y%m%d`-$i"
+
+sync
