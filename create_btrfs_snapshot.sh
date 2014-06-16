@@ -23,12 +23,7 @@ fi
 # Ensure the subvolmune to backup exists
 if [ ! -d $volume ]; then
   echo "$volume not found; trying to mount $btrfs_root"
-  sudo mount $btrfs_root
-  sleep 2
-  if [ ! -d $volume ]; then
-    echo "Failed to find subvolume $volume"
-    exit 1
-  fi
+  sudo mount $btrfs_root || (echo Failed to mount $btrfs_root; exit 1)
 fi
 
 # Numerate snapshots for each day
