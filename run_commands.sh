@@ -3,10 +3,9 @@
 # Useage:
 # nohup nice ./runCommands.sh n commands.txt > log.out &
 #
-# executes all jobs listed in commands.txt, whereby it 
-# keeps n jobs running in parrallel all the time.
-# In commands.txt, each row should be the command for a
-# different job.
+# Executes commands listed in commands.txt, which should contain exactly one
+# command per line. This script keeps n of the commands running in parallel 
+# all the time.
 
 if [ "$#" -ne 2 ]; then
   echo "Wrong number of arguments"
